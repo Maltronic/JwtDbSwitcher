@@ -1,15 +1,13 @@
 <?php
-namespace Maltronic\Bundle\JwtDbSwitcher;
+namespace Maltronic\JwtDbSwitcher;
 
-use Maltronic\Bundle\DependencyInjection\Security\Factory\ConfigSwitcherFactory;
-use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * MaltronicJwtDbSwitcherBundle
  *
- * @author Malcolm Davis <maltronic.email@gmail.com>
+ * @author Maltronic <maltronic.email@gmail.com>
  */
 class MaltronicJwtDbSwitcherBundle extends Bundle
 {
@@ -19,9 +17,5 @@ class MaltronicJwtDbSwitcherBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
-
-        /** @var SecurityExtension $extension */
-        $extension = $container->getExtension('security');
-        $extension->addSecurityListenerFactory(new ConfigSwitcherFactory());
     }
 }

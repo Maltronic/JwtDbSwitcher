@@ -1,7 +1,7 @@
 {
-  "name": "maltronic/jwt-db-switcher-switcher-bundle",
+  "name": "maltronic/jwt-db-switcher-bundle",
   "type": "symfony-bundle",
-  "description": "Provides listeners on JWT events for dynamically changing databases in the PHP Symfony 2 framework",
+  "description": "Provides listeners for JWT events to enable the altering of doctrine's default database upon authentication",
   "keywords": ["Symfony2", "bundle", "doctrine", "jwt"],
   "homepage": "https://github.com/maltronic/JwtDbSwitcherBundle",
   "license": "MIT",
@@ -13,8 +13,11 @@
   ],
   "require": {
     "php": ">=5.3.3",
-    "symfony/symfony": "~2.3",
-    "symfony/framework-bundle": "~2.3"
+    "symfony/symfony": "~2.6|~3.0",
+    "symfony/framework-bundle": "~2.6|~3.0",
+    "doctrine/doctrine-bundle": "^1.6",
+    "doctrine/orm": "~2.5.4",
+    "lexik/jwt-authentication-bundle": "^1.3"
   },
   "autoload": {
     "psr-0": { "Maltronic\\Bundle\\JwtDbSwitcherBundle": "" }
@@ -23,4 +26,3 @@
     "phpunit/phpunit": "~4.1"
   }
 }
-

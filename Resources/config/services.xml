@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="maltronic_jwt_db_switcher.database_switch.class">
+            Maltronic\Bundle\JwtDbSwitcherBundle\EventListener\DatabaseSwitchListener
+        </parameter>
+        <parameter key="maltronic_jwt_db_switcher.authentication_success_listener.class">
+            Maltronic\Bundle\JwtDbSwitcherBundle\EventListener\AuthenticationSuccessListener
+        </parameter>
+        <parameter key="maltronic_jwt_db_switcher.jwt_created_listener.class">
+            Maltronic\Bundle\JwtDbSwitcherBundle\EventListener\JwtCreatedListener
+        </parameter>
+        <parameter key="maltronic_jwt_db_switcher.jwt_created_listener.class">
+            Maltronic\Bundle\JwtDbSwitcherBundle\EventListener\JWTDecodedListener
+        </parameter>
+        <parameter key="maltronic_jwt_db_switcher.auth_user_services.class">
+            Maltronic\Bundle\JwtDbSwitcherBundle\Services\AuthUserServices
+        </parameter>
+    </parameters>
+
+    <services>
+        <service id="maltronic_jwt_db_switcher.database_switch"
+                 class="%maltronic_jwt_db_switcher.database_switch.class%">
+            <argument type="service" id="doctrine.request_stack"/>
+            <argument type="service" id="doctrine.doctrine"/>
+            <argument type="service" id="doctrine.dbal.default_connection"/>
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="%maltronic_jwt_db_switcher.database_list%"/>
+            <tag name="kernel.event_listener"/>
+            <tag name="kernel.request"/>
+            <tag name="onKernelRequest"/>
+        </service>
+        <service id="maltronic_jwt_db_switcher.authentication_success_listener"
+                 class="%maltronic_jwt_db_switcher.authentication_success_listener.class%">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <tag name="kernel.event_listener" event="lexik_jwt_authentication.on_authentication_success"
+                 method="onAuthenticationSuccessResponse"/>
+        </service>
+        <service id="maltronic_jwt_db_switcher.jwt_created_listener"
+                 class="%maltronic_jwt_db_switcher.jwt_created_listener.class%">
+            <tag name="kernel.event_listener" event="lexik_jwt_authentication.on_jwt_created" method="onJWTCreated"/>
+        </service>
+        <service id="maltronic_jwt_db_switcher.jwt_decoded_listener"
+                 class="%maltronic_jwt_db_switcher.jwt_decoded_listener.class%">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <tag name="kernel.event_listener" event="lexik_jwt_authentication.on_jwt_decoded" method="onJWTDecoded"/>
+        </service>
+        <service id="maltronic_jwt_db_switcher.auth_user_service"
+                 class="%maltronic_jwt_db_switcher.auth_user_services.class%">
+            <argument type="service" id="doctrine.orm.global_entity_manager"/>
+            <argument type="service" id="security.password_encoder"/>
+        </service>
+    </services>
+</container>
